@@ -8,6 +8,7 @@
 <link rel="stylesheet" href="./material.min.css" />
 <script src="./material.min.js"></script>
 <link rel="stylesheet" content="text/css" href="gphotos-sync.css" />
+<script src="./sql.js"></script>
 <script src="./gphotos-sync-ui.js"></script>
 <body>
 <!-- Always shows a header, even in smaller screens. -->
@@ -28,7 +29,13 @@
     </nav>
   </div>
   <main class="mdl-layout__content">
-    <div class="page-content" id="sync" style="display: block;">Sync<!-- Your content goes here --></div>
+    <div class="page-content" id="sync" style="display: block;">
+      <div id="sync-libraries"></div>
+      <!-- Colored FAB button with ripple -->
+      <button id="add" class="mdl-button mdl-js-button mdl-button--fab mdl-js-ripple-effect mdl-button--colored">
+        <i class="material-icons">add</i>
+      </button> 
+    </div>
     <div class="page-content" id="settings" style="display: none;">Settings<!-- Your content goes here --></div>
     <div class="page-content" id="log" style="display: none;">
       <div class="log mdl-card mdl-shadow--2dp">
@@ -50,7 +57,7 @@
         </div>
       </div>    
     </div>
-    <div class="page-content" id="about" style="display: none;">About<!-- Your content goes here --></div>
+    <div class="page-content" id="about" style="display: none;">About<!-- Your content goes here --></div>    
   </main>
 </div>
 </body>

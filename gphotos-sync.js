@@ -12,8 +12,29 @@ try {
   var pip = '';
   var tool = '';
   
-  ipcMain.on('test', function(e, message) {
-    e.sender.send('test', '');
+  ipcMain.on('showOpenDialog', function(event, data) {
+    dialog.showOpenDialog(mainWindow, data.options, function(result) {
+      data.result = result;
+      event.sender.send('showOpenDialog', data);
+    });
+  });
+
+  ipcMain.on('readFileSync', function(event, data) {
+    data.data = fs.readFileSync(data.path).toString('base64');
+    event.sender.send('readFileSync', data);
+  });
+
+  ipcMain.on('saveSettings', function(event, data) {
+    fs.writeFileSync(path.join(os.homedir(), 'gPhotos Sync Settings.json'), JSON.stringify(data)); 
+  });
+
+  ipcMain.on('loadSettings', function(event, data) {
+    try {
+      data.data = fs.readFileSync(path.join(os.homedir(), 'gPhotos Sync Settings.json')).toString();
+    } catch(e) {
+      data.data = '{}';
+    }
+    event.sender.send('loadSettings', data);
   });
   
   // find tool
@@ -45,7 +66,7 @@ try {
       run(pip + ' show gphotos-sync', function(result) {
         if(result != '') tool = pip + ' run gphotos-sync';
         if(tool == '') dialog.showErrorBox('Error', 'gphotos-sync not installed');
-        dialog.showErrorBox('Info', 'gphotos-sync installed @' + tool + ', pip installed @' + pip);    
+        //dialog.showErrorBox('Info', 'gphotos-sync installed @' + tool + ', pip installed @' + pip);    
       });
     }
   }
@@ -82,7 +103,7 @@ try {
           mainWindow = null;
           app.quit();
       });        
-  });     	  	
+  });      	  	
   
   function locate(path, callback) {
     var where = 'which ' + path[0];

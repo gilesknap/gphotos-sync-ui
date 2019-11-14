@@ -25,6 +25,16 @@
 
 /* gphotos-sync.css */
 
+#add {
+  position: fixed;
+  display: block;
+  right: 0;
+  bottom: 0;
+  margin-right: 15px;
+  margin-bottom: 15px;
+  z-index: 900;
+}
+
 .mdl-layout__content {
   background-color: rgba(0, 0, 0, .1);
   padding: 15px;
@@ -33,14 +43,19 @@
 .log.mdl-card {
   width: 512px;
 }
-.log > .mdl-card__title {
+.mdl-card__title {
   color: #fff;
-  /* height: 176px; */
   background-color: gray;
 }
+
 .log > .mdl-card__supporting-text {
   height: 176px;
 }
-.log > .mdl-card__menu {
+
+.lib > .mdl-card__supporting-text {
+  height: 76px;
+}
+
+.mdl-card__menu {
   color: #fff;
 }
