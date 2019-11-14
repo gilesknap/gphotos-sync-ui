@@ -25,6 +25,10 @@
 
 /* gphotos-sync.css */
 
+* {
+  outline: none;
+}
+
 #add {
   position: fixed;
   display: block;
