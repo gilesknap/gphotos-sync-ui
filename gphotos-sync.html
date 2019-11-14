@@ -5,8 +5,53 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 <meta http-equiv="X-UA-Compatible" content="ie=edge" />
 <title>gPhotos Sync</title>
+<link rel="stylesheet" href="./material.min.css" />
+<script src="./material.min.js"></script>
 <link rel="stylesheet" content="text/css" href="gphotos-sync.css" />
-<body style="font-family: Arial; font-size: 12pt;">
-<form style="margin: 40px;">gPhotos Sync</form>
+<script src="./gphotos-sync-ui.js"></script>
+<body>
+<!-- Always shows a header, even in smaller screens. -->
+<div class="mdl-layout mdl-js-layout mdl-layout--fixed-header">
+  <header class="mdl-layout__header">
+    <div class="mdl-layout__header-row">
+      <!-- Title -->
+      <span class="mdl-layout-title">gPhotos Sync</span>
+    </div>
+  </header>
+  <div class="mdl-layout__drawer">
+    <span class="mdl-layout-title">gPhotos Sync</span>
+    <nav class="mdl-navigation">
+      <a class="mdl-navigation__link" href="#sync" id="menu-sync">Sync</a>
+      <a class="mdl-navigation__link" href="#settings" id="menu-settings">Settings</a>
+      <a class="mdl-navigation__link" href="#log" id="menu-log">Log</a>
+      <a class="mdl-navigation__link" href="#about" id="menu-about">About</a>
+    </nav>
+  </div>
+  <main class="mdl-layout__content">
+    <div class="page-content" id="sync" style="display: block;">Sync<!-- Your content goes here --></div>
+    <div class="page-content" id="settings" style="display: none;">Settings<!-- Your content goes here --></div>
+    <div class="page-content" id="log" style="display: none;">
+      <div class="log mdl-card mdl-shadow--2dp">
+        <div class="mdl-card__title">
+          <h2 class="mdl-card__title-text">Log</h2>
+        </div>
+        <div class="mdl-card__supporting-text">
+          ...
+        </div>
+        <div class="mdl-card__actions mdl-card--border">
+          <a class="mdl-button mdl-button--colored mdl-js-button mdl-js-ripple-effect">
+            Clear log
+          </a>
+        </div>
+        <div class="mdl-card__menu">
+          <button class="mdl-button mdl-button--icon mdl-js-button mdl-js-ripple-effect">
+            <i class="material-icons">share</i>
+          </button>
+        </div>
+      </div>    
+    </div>
+    <div class="page-content" id="about" style="display: none;">About<!-- Your content goes here --></div>
+  </main>
+</div>
 </body>
 </html>

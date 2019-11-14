@@ -58,7 +58,7 @@ try {
           minimizable: false,
           maximizable: false,            
           show: false,
-          width: 500, height: 300,
+          width: 700, height: 500,
           center: true,
       }).once('ready-to-show', () => {
         
