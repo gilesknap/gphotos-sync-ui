@@ -1,0 +1,10 @@
+{
+  "name": "gphotos-sync",
+  "main": "gphotos-sync.js",
+  "version": "0.0.1",
+  "description": "gPhotos Sync",
+  "author": "michael79bxl",
+  "license": "BSD-2-Clause",
+  "dependencies": {
+  }
+}
