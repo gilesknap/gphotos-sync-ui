@@ -82,7 +82,7 @@ dialog {
 
 .mdl-dialog__content {
   height: auto !important;
-  max-height: 100% !important;
+  max-height: 70% !important;
   overflow: scroll;
 }
 
