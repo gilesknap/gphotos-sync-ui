@@ -27,6 +27,7 @@
 
 * {
   outline: none;
+  box-sizing: border-box !important;
 }
 
 #add {
@@ -40,13 +41,15 @@
 }
 
 .mdl-layout__content {
+  width: 100%;
   background-color: rgba(0, 0, 0, .1);
   padding: 15px;
 }
 
 .log.mdl-card {
-  width: 512px;
+  width: 100%;
 }
+
 .mdl-card__title {
   color: #fff;
   background-color: gray;
@@ -56,10 +59,34 @@
   height: 176px;
 }
 
+.lib.mdl-card {
+  width: 365px;
+  float: left;
+  margin-right: 15px;
+  margin-bottom: 15px;
+}
+
 .lib > .mdl-card__supporting-text {
-  height: 76px;
+  height: 96px;
 }
 
 .mdl-card__menu {
   color: #fff;
+}
+
+dialog {
+  min-width: 90% !important;
+  height: 90% !important;
+  overflow: hidden;
+}
+
+.mdl-dialog__content {
+  height: auto !important;
+  max-height: 100% !important;
+  overflow: scroll;
+}
+
+tt {
+  display: block;
+  width: 100%;
 }

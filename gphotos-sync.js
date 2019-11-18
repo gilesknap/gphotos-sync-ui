@@ -4,13 +4,13 @@ const { app, BrowserWindow, MenuItem, Menu, ipcMain, ipcRenderer, systemPreferen
 const os = require('os');
 const path = require('path');
 const fs = require('fs');
-const { exec, execSync } = require('child_process');
+const { exec, execSync, spawn } = require('child_process');
 
 try {
 
   let mainWindow;
-  var pip = '';
   var tool = '';
+  var pip = '';
   
   ipcMain.on('showOpenDialog', function(event, data) {
     dialog.showOpenDialog(mainWindow, data.options, function(result) {
@@ -36,20 +36,40 @@ try {
     }
     event.sender.send('loadSettings', data);
   });
+
+  ipcMain.on('sync', function(event, lib) {
+    var exe = tool.split(' ')[0];
+    var args = tool.split(' ').slice(1);
+    if(lib.fav) {
+      args.push('--favourites-only');
+      args.push('--skip-albums');
+    }
+    args.push(lib.path);
+    //dialog.showErrorBox('Info', exe + ' => ' + args.join(','));
+    var sync = spawn(exe, args, {cwd: os.homedir()});
+    sync.stdout.on('data', function(data) {
+      event.sender.send('status', data.toString());
+    });
+    sync.stderr.on('data', function(data) {
+      event.sender.send('status', data.toString());
+    });
+  });
   
   // find tool
   locate(['gphotos-sync', 'gphotos-sync.*'], function(result) {
     tool = result;
     if(tool == '') {
-      // find pip
-      locate(['pip', 'pip.exe'], function(result) {
+      // find pipenv
+      locate(['pipenv', 'pipenv.exe'], function(result) {
         pip = result;
         // find python
         if(pip == '') {
           locate(['python3', 'python*.exe'], function(result) {
             pip = result;
-            if(pip != '') pip += ' -m pip';   
-            about_tools();         
+            if(pip != '') {
+              pip += ' -m pip'; 
+              about_tools();
+            }
           });
         } else {
           about_tools();
@@ -64,7 +84,11 @@ try {
       dialog.showErrorBox('Error', 'python/pip not installed');
     } else {
       run(pip + ' show gphotos-sync', function(result) {
-        if(result != '') tool = pip + ' run gphotos-sync';
+        if(result != '' && pip.indexOf('pipenv') == 0) {
+          tool = pip + ' run gphotos-sync';
+        } else {
+          tool = '/usr/local/bin/gphotos-sync';
+        }
         if(tool == '') dialog.showErrorBox('Error', 'gphotos-sync not installed');
         //dialog.showErrorBox('Info', 'gphotos-sync installed @' + tool + ', pip installed @' + pip);    
       });
@@ -79,7 +103,7 @@ try {
           minimizable: false,
           maximizable: false,            
           show: false,
-          width: 700, height: 500,
+          width: 1000, height: 700,
           center: true,
       }).once('ready-to-show', () => {
         

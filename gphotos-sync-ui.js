@@ -36,6 +36,15 @@ messageUI.on('loadSettings', function(event, data) {
   fx(data);
 });
 
+messageUI.on('status', function(event, data) {
+  var tt = document.createElement('tt');
+  tt.innerText = data;
+  document.getElementById('status').appendChild(tt);
+  setTimeout(function() {
+    document.getElementById('status').scrollIntoView(false);
+  }, 100);
+});
+
 function switchPage(event) {
   var el = event.target;
   if(currentPage != '') document.getElementById(currentPage).style.display = 'none';
@@ -50,7 +59,11 @@ function addDirectory(event) {
 
 function loadDirectory(data) {
   console.log(data);
-  data.path = data.result[0];
+  data.path = new String(data.result[0]);
+  if(!data.path.endsWith('.sqlite') || data.path.endsWith('/')) {
+    if(!data.path.endsWith('/')) data.path += '/';
+    data.path += 'gphotos.sqlite';
+  }
   delete data.options;
   delete data.result;
   data.callback = 'loadDatabase';
@@ -87,7 +100,11 @@ function showLibraries() {
   document.getElementById('sync-libraries').innerText = '';
   for(var i in settings.libraries) {
     var lib = document.createElement('div');
+    lib.setAttribute('id', 'lib-' + i);
     lib.setAttribute('class', 'lib mdl-card mdl-shadow--2dp');
+    for(var k in settings.libraries[i]) {
+      lib.setAttribute('data-' + k, settings.libraries[i][k]);
+    }
     var title = document.createElement('div');
     title.setAttribute('class', 'mdl-card__title');
     var h2 = document.createElement('h2');
@@ -105,15 +122,100 @@ function showLibraries() {
     action1.innerText = 'Sync';
     var action2 = document.createElement('a');
     action2.setAttribute('class', 'mdl-button mdl-button--colored mdl-js-button mdl-js-ripple-effect');
-    action2.innerText = 'Remove';
+    action2.innerText = 'Settings';
+    var action3 = document.createElement('a');
+    action3.setAttribute('class', 'mdl-button mdl-button--colored mdl-js-button mdl-js-ripple-effect');
+    action3.innerText = 'Remove';
     title.appendChild(h2);
     lib.appendChild(title);
     lib.appendChild(content);
     actions.appendChild(action1);
     actions.appendChild(action2);
+    actions.appendChild(action3);
+    action1.addEventListener('click', sync);
+    action2.addEventListener('click', edit);
     lib.appendChild(actions);       
     document.getElementById('sync-libraries').appendChild(lib);
   }
+}
+
+function sync(event) {
+  if(!event) event = window.event;
+  var el = event.target || event.srcElement;
+  var lib = el;
+  while(lib.className.indexOf('lib mdl-card ') == -1 && lib.parentNode) lib = lib.parentNode;
+  console.log(lib);
+  var path = lib.getAttribute('data-path');
+  if(path.endsWith('.sqlite')) path = path.substring(0, path.lastIndexOf('/'));
+  if(!path.endsWith('/')) path += '/';
+  console.log(path);
+  var fav = false;
+  if(lib.getAttribute('data-fav')) {
+    fav = lib.getAttribute('data-fav').toString() == 'true';
+  }
+  messageUI.send('sync', {path: path, fav: fav});
+  var dialog = document.getElementById('sync-dialog');
+  document.getElementById('status').innerText = '';
+  var tt = document.createElement('tt');
+  tt.innerText = 'Syncing...';  
+  document.getElementById('status').appendChild(tt);
+  if(!dialog.showModal) dialogPolyfill.registerDialog(dialog);
+  dialog.showModal();
+  dialog.querySelector('#stop').removeEventListener('click', syncStop);  
+  dialog.querySelector('#stop').addEventListener('click', syncStop);  
+}
+
+function syncStop() {
+  var dialog = document.getElementById('sync-dialog');
+  dialog.close();
+}
+
+function edit(event) {
+  if(!event) event = window.event;
+  var el = event.target || event.srcElement;
+  var lib = el;
+  while(lib.className.indexOf('lib mdl-card ') == -1 && lib.parentNode) lib = lib.parentNode;
+  console.log(lib);
+  var libpath = lib.getAttribute('data-path');
+  if(libpath.endsWith('.sqlite')) libpath = libpath.substring(0, libpath.lastIndexOf('/'));
+  if(!libpath.endsWith('/')) libpath += '/';
+  console.log(libpath);
+  document.getElementById('settings-fav').checked = false;
+  document.getElementById('settings-fav').parentNode.className = document.getElementById('settings-fav').parentNode.className.replace(' is-checked', '');
+  if(lib.getAttribute('data-fav')) {
+    if(lib.getAttribute('data-fav').toString() == 'true') {
+      document.getElementById('settings-fav').checked = true;
+      document.getElementById('settings-fav').parentNode.className = document.getElementById('settings-fav').parentNode.className + ' is-checked';      
+    }
+  }
+  var dialog = document.getElementById('settings-dialog');
+  dialog.setAttribute('data-lib', lib.id);
+  if(!dialog.showModal) dialogPolyfill.registerDialog(dialog);
+  dialog.showModal();
+  dialog.querySelector('#ok').removeEventListener('click', editOk);
+  dialog.querySelector('#ok').addEventListener('click', editOk);  
+  dialog.querySelector('#cancel').removeEventListener('click', editCancel);
+  dialog.querySelector('#cancel').addEventListener('click', editCancel);  
+}
+
+function editOk(event) {
+  var dialog = document.getElementById('settings-dialog');
+  var lib = document.getElementById(dialog.getAttribute('data-lib'));
+  console.log(lib);
+  for(var i in settings.libraries) {
+    if(settings.libraries[i].path == lib.getAttribute('data-path')) {
+      console.log(document.getElementById('settings-fav').checked);
+      settings.libraries[i].fav = document.getElementById('settings-fav').checked;
+    }
+  }
+  saveSettings();
+  dialog.close();
+  showLibraries();
+}
+
+function editCancel(event) {
+  var dialog = document.getElementById('settings-dialog');
+  dialog.close();
 }
 
 function loadSettings(data) {

@@ -7,6 +7,8 @@
 <title>gPhotos Sync</title>
 <link rel="stylesheet" href="./material.min.css" />
 <script src="./material.min.js"></script>
+<link rel="stylesheet" href="./dialog-polyfill.css" />
+<script src="./dialog-polyfill.js"></script>
 <link rel="stylesheet" content="text/css" href="gphotos-sync.css" />
 <script src="./sql.js"></script>
 <script src="./gphotos-sync-ui.js"></script>
@@ -60,5 +62,37 @@
     <div class="page-content" id="about" style="display: none;">About<!-- Your content goes here --></div>    
   </main>
 </div>
+<dialog id="sync-dialog" class="mdl-dialog">
+  <h4 class="mdl-dialog__title">Sync</h4>
+  <div class="mdl-dialog__content">
+    <p id="status">
+      <tt>Syncing...</tt>
+    </p>
+  </div>
+  <div class="mdl-dialog__actions">
+    <button type="button" class="mdl-button" id="stop">Stop</button>
+  </div>
+</dialog>
+<dialog id="settings-dialog" class="mdl-dialog">
+  <h4 class="mdl-dialog__title">Settings</h4>
+  <div class="mdl-dialog__content">
+    <ul class="mdl-list">
+      <li class="mdl-list__item">
+        <span class="mdl-list__item-primary-content">
+          Favourites only
+        </span>
+        <span class="mdl-list__item-secondary-action">
+          <label class="mdl-switch mdl-js-switch mdl-js-ripple-effect" for="settings-fav">
+            <input type="checkbox" id="settings-fav" class="mdl-switch__input" />
+          </label>
+        </span>        
+      </li>
+    </ul>  
+  </div>
+  <div class="mdl-dialog__actions">
+    <button type="button" class="mdl-button" id="ok">Ok</button>
+    <button type="button" class="mdl-button" id="cancel">Cancel</button>
+  </div>
+</dialog>
 </body>
 </html>
