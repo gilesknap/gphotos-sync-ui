@@ -41,6 +41,7 @@ try {
     var exe = tool.split(' ')[0];
     var args = tool.split(' ').slice(1);
     if(lib.fav) {
+      args.push('--rescan');
       args.push('--favourites-only');
       args.push('--skip-albums');
     }
