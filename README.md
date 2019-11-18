@@ -19,4 +19,3 @@ Todo
 ![](gphotos-sync-ui-shot1.png)
 ![](gphotos-sync-ui-shot2.png)
 ![](gphotos-sync-ui-shot3.png)
-![](gphotos-sync-ui-shot4.png)
