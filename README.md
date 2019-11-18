@@ -16,6 +16,6 @@ Todo
 * implement all gphotos-sync settings
 * ui for credentials
 
-![](gphotos-sync-ui-shot1.png)
-![](gphotos-sync-ui-shot2.png)
-![](gphotos-sync-ui-shot3.png)
+![](gphotos-sync-ui-1.png)
+![](gphotos-sync-ui-2.png)
+![](gphotos-sync-ui-3.png)
