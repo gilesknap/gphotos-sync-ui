@@ -10,9 +10,9 @@ The app is not yet available for download
 
 ## Testing (mac only)
 
-* Download or clone project
-* Run make.command
-* The app is copied to ~/Applications folder
+* Download or clone then project
+* Run `make.command` script (make executable if necessary using `chmod +x make.command`)
+* The app is copied to `~/Applications` folder
 * Dependencies: none
 
 ## Project status
