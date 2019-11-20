@@ -12,7 +12,7 @@ The app is not yet available for download
 
 ### macOS
 
-* Download or clone then project
+* Download or clone the project
 * Run `make.command` script (make executable if necessary using `chmod +x make.command`)
 * The app is copied to `~/Applications` folder
 * Dependencies: none
