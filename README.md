@@ -8,12 +8,22 @@ Graphical User Interface for the great gphotos-sync tool using node and DeskGap
 
 The app is not yet available for download
 
-## Testing (NB: mac only)
+## Testing
+
+### macOS
 
 * Download or clone then project
 * Run `make.command` script (make executable if necessary using `chmod +x make.command`)
 * The app is copied to `~/Applications` folder
 * Dependencies: none
+
+### Linux
+
+*Not available yet*
+
+### Windows
+
+*Not available yet*
 
 ## Project status
 
