@@ -4,6 +4,19 @@ Graphical User Interface for the great gphotos-sync tool using node and DeskGap
 
 *Under developement - Not working yet*
 
+## Download
+
+The app is not yet available for download
+
+## Testing (mac only)
+
+Download or clone project
+Run make.command
+The app is copied to ~/Applications folder
+Dependencies: none
+
+## Project status
+
 Done
 
 * add existing library

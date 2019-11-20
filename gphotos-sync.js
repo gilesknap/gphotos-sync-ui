@@ -9,8 +9,10 @@ const { exec, execSync, spawn } = require('child_process');
 try {
 
   let mainWindow;
+  let gPhotos;
   var tool = '';
   var pip = '';
+  var prevTitle = '';
   
   ipcMain.on('showOpenDialog', function(event, data) {
     dialog.showOpenDialog(mainWindow, data.options, function(result) {
@@ -92,6 +94,43 @@ try {
   }
   
   app.once('ready', () => {
+    
+      gPhotos = new BrowserWindow({
+          title: 'gPhotos',
+          titleBarStyle: 'default',
+          resizable: true,
+          minimizable: true,
+          maximizable: false,            
+          show: false,
+          width: 1000, height: 700,
+          center: true,
+      }).once('ready-to-show', () => {
+        
+        try {
+          
+          gPhotos.setMenu(null);    
+          gPhotos.show();
+          if(os.platform() == 'darwin') exec('osascript -e \'tell application "gPhotos" to activate\'');
+                  
+        } catch(e){
+          
+          dialog.showErrorBox('Error', e.stack);
+          
+        }            
+      });  
+
+      gPhotos.on('page-title-updated', function() {
+        var title = gPhotos.getTitle();
+        if(title.indexOf('Sign in') == 0 && title != prevTitle) dialog.showErrorBox('Info', 'Please sign in');
+        if(title.indexOf('Albums') == 0 && title != prevTitle) {
+          dialog.showErrorBox('Info', 'Thank you ;-)');
+          gPhotos.minimize();
+        }
+        if(title != '') prevTitle = title;
+      });
+      
+      gPhotos.loadURL('https://photos.google.com/albums?hl=en');  // force english
+    
       mainWindow = new BrowserWindow({
           title: 'gPhotos Sync',
           titleBarStyle: 'default',
