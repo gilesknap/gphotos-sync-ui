@@ -39,12 +39,7 @@ try {
 
   ipcMain.on('sync', function(event, lib) {
     var exe = tool.split(' ')[0];
-    var args = tool.split(' ').slice(1);
-    if(lib.fav) {
-      args.push('--rescan');
-      args.push('--favourites-only');
-      args.push('--skip-albums');
-    }
+    var args = lib.flags;
     args.push(lib.path);
     //dialog.showErrorBox('Info', exe + ' => ' + args.join(','));
     var sync = spawn(exe, args, {cwd: os.homedir()});

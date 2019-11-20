@@ -70,20 +70,40 @@
     </p>
   </div>
   <div class="mdl-dialog__actions">
-    <button type="button" class="mdl-button" id="stop">Stop</button>
+    <button type="button" class="mdl-button" id="stop">Close</button>
   </div>
 </dialog>
 <dialog id="settings-dialog" class="mdl-dialog">
   <h4 class="mdl-dialog__title">Settings</h4>
   <div class="mdl-dialog__content">
     <ul class="mdl-list">
-      <li class="mdl-list__item">
+      <li class="lib-settings mdl-list__item" id="lib-settings-favourites-only">
         <span class="mdl-list__item-primary-content">
           Favourites only
         </span>
         <span class="mdl-list__item-secondary-action">
-          <label class="mdl-switch mdl-js-switch mdl-js-ripple-effect" for="settings-fav">
-            <input type="checkbox" id="settings-fav" class="mdl-switch__input" />
+          <label class="mdl-switch mdl-js-switch mdl-js-ripple-effect" for="settings-favourites-only">
+            <input type="checkbox" id="settings-favourites-only" class="mdl-switch__input" />
+          </label>
+        </span>        
+      </li>
+      <li class="lib-settings mdl-list__item" id="lib-settings-skip-albums">
+        <span class="mdl-list__item-primary-content">
+          Skip albums
+        </span>
+        <span class="mdl-list__item-secondary-action">
+          <label class="mdl-switch mdl-js-switch mdl-js-ripple-effect" for="settings-skip-albums">
+            <input type="checkbox" id="settings-skip-albums" class="mdl-switch__input" />
+          </label>
+        </span>        
+      </li>
+      <li class="lib-settings mdl-list__item" id="lib-settings-rescan">
+        <span class="mdl-list__item-primary-content">
+          Rescan
+        </span>
+        <span class="mdl-list__item-secondary-action">
+          <label class="mdl-switch mdl-js-switch mdl-js-ripple-effect" for="settings-rescan">
+            <input type="checkbox" id="settings-rescan" class="mdl-switch__input" />
           </label>
         </span>        
       </li>

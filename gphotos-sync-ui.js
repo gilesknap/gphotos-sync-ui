@@ -144,16 +144,17 @@ function sync(event) {
   var el = event.target || event.srcElement;
   var lib = el;
   while(lib.className.indexOf('lib mdl-card ') == -1 && lib.parentNode) lib = lib.parentNode;
-  console.log(lib);
   var path = lib.getAttribute('data-path');
   if(path.endsWith('.sqlite')) path = path.substring(0, path.lastIndexOf('/'));
   if(!path.endsWith('/')) path += '/';
-  console.log(path);
-  var fav = false;
-  if(lib.getAttribute('data-fav')) {
-    fav = lib.getAttribute('data-fav').toString() == 'true';
+  var flags = [];
+  for(var i = 0; i < lib.attributes.length; i++) {
+    var attr = lib.attributes[i];
+    if(attr.name.startsWith('data-settings-') && lib.getAttribute(attr.name).toString() == 'true') {
+      flags.push('--' + attr.name.substring('data-settings-'.length));
+    }
   }
-  messageUI.send('sync', {path: path, fav: fav});
+  messageUI.send('sync', {path: path, flags: flags});
   var dialog = document.getElementById('sync-dialog');
   document.getElementById('status').innerText = '';
   var tt = document.createElement('tt');
@@ -180,12 +181,20 @@ function edit(event) {
   if(libpath.endsWith('.sqlite')) libpath = libpath.substring(0, libpath.lastIndexOf('/'));
   if(!libpath.endsWith('/')) libpath += '/';
   console.log(libpath);
-  document.getElementById('settings-fav').checked = false;
-  document.getElementById('settings-fav').parentNode.className = document.getElementById('settings-fav').parentNode.className.replace(' is-checked', '');
-  if(lib.getAttribute('data-fav')) {
-    if(lib.getAttribute('data-fav').toString() == 'true') {
-      document.getElementById('settings-fav').checked = true;
-      document.getElementById('settings-fav').parentNode.className = document.getElementById('settings-fav').parentNode.className + ' is-checked';      
+  var libSettings = document.querySelectorAll('.lib-settings');
+  for(var i = 0; i < libSettings.length; i++) {
+    var el = libSettings[i];
+    var flagId = el.id.substring('lib-'.length); 
+    var flag = document.getElementById(flagId);
+    if(typeof flag != 'undefined' && flag != null) {
+      flag.checked = false;
+      flag.parentNode.className = flag.parentNode.className.replace(' is-checked', '');      
+    }
+    if(lib.getAttribute('data-' + flagId)) {
+      if(lib.getAttribute('data-' + flagId).toString() == 'true') {
+        flag.checked = true;
+        flag.parentNode.className = flag.parentNode.className + ' is-checked';      
+      }
     }
   }
   var dialog = document.getElementById('settings-dialog');
@@ -204,8 +213,16 @@ function editOk(event) {
   console.log(lib);
   for(var i in settings.libraries) {
     if(settings.libraries[i].path == lib.getAttribute('data-path')) {
-      console.log(document.getElementById('settings-fav').checked);
-      settings.libraries[i].fav = document.getElementById('settings-fav').checked;
+      var libSettings = document.querySelectorAll('.lib-settings');
+      console.log(libSettings);
+      for(var j = 0; j < libSettings.length; j++) {
+        var el = libSettings[j];
+        console.log(el);
+        var flagId = el.id.substring('lib-'.length); 
+        var flag = document.getElementById(flagId);
+        console.log(flagId);
+        settings.libraries[i][flagId] = flag.checked;
+      }
     }
   }
   saveSettings();
