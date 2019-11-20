@@ -95,6 +95,7 @@ try {
   
   app.once('ready', () => {
     
+      /*
       gPhotos = new BrowserWindow({
           title: 'gPhotos',
           titleBarStyle: 'default',
@@ -130,7 +131,8 @@ try {
       });
       
       gPhotos.loadURL('https://photos.google.com/albums?hl=en');  // force english
-    
+      */
+      
       mainWindow = new BrowserWindow({
           title: 'gPhotos Sync',
           titleBarStyle: 'default',
