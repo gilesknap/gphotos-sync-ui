@@ -5,6 +5,7 @@ var messageUI = window.deskgap.messageUI;
 var currentDB = {};
 var settings = {};
 var currentPage = 'sync';
+var currentSync = {};
 
 settings.libraries = [];
 
@@ -43,7 +44,44 @@ messageUI.on('status', function(event, data) {
   setTimeout(function() {
     document.getElementById('status').scrollIntoView(false);
   }, 100);
+  if('flags' in currentSync) {
+    for(var i in currentSync.flags) {
+      if(data.indexOf('Done.') != -1 && currentSync.flags[i] == '--web-download') {
+        path = currentSync.path;
+        if(!path.endsWith('.sqlite') || path.endsWith('/')) {
+          if(!path.endsWith('/')) path += '/';
+          path += 'gphotos.sqlite';
+        }
+        messageUI.send('readFileSync', {path: path, callback: 'download'});
+      }
+    }
+  }
 });
+
+function download(db) {
+  currentDB = db;
+  var rootDir = db.path;
+  if(rootDir.endsWith('/gphotos.sqlite')) rootDir = rootDir.substring(0, rootDir.length - new String('/gphotos.sqlite').length);
+  if(!rootDir.endsWith('/')) rootDir += '/';
+  initSqlJs({}).then(function(SQL){  
+    var data = b64toarray(currentDB.data);
+    var db = new SQL.Database(data);
+    data = [];
+    var files = db.exec('SELECT Url, Path, FileName FROM SyncFiles');
+    if(typeof files[0] != 'object') return;
+    if('values' in files[0]) {
+      for(var i in files[0].values) {
+        var realPath = rootDir + files[0].values[i][1] + '/' + files[0].values[i][2];
+        data.push({url: files[0].values[i][0], path: realPath});
+      }
+      messageUI.send('download', data);
+    }
+  });
+}
+
+function parseHTML(html) {
+  console.log(html);
+}
 
 function switchPage(event) {
   var el = event.target;
@@ -58,7 +96,7 @@ function addDirectory(event) {
 }
 
 function loadDirectory(data) {
-  console.log(data);
+  //console.log(data);
   data.path = new String(data.result[0]);
   if(!data.path.endsWith('.sqlite') || data.path.endsWith('/')) {
     if(!data.path.endsWith('/')) data.path += '/';
@@ -71,7 +109,7 @@ function loadDirectory(data) {
 }
 
 function loadDatabase(db) {
-  console.log(db);
+  //console.log(db);
   currentDB = db;
   initSqlJs({}).then(function(SQL){  
     var data = b64toarray(currentDB.data);
@@ -154,7 +192,8 @@ function sync(event) {
       flags.push('--' + attr.name.substring('data-settings-'.length));
     }
   }
-  messageUI.send('sync', {path: path, flags: flags});
+  currentSync = {path: path, flags: flags};
+  messageUI.send('sync', currentSync);
   var dialog = document.getElementById('sync-dialog');
   document.getElementById('status').innerText = '';
   var tt = document.createElement('tt');

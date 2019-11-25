@@ -32,6 +32,7 @@ cp -f gphotos-sync.js "./mac/gPhotos Sync.app/Contents/Resources/app/gphotos-syn
 cp -f gphotos-sync-ui.js "./mac/gPhotos Sync.app/Contents/Resources/app/gphotos-sync-ui.js"
 cp -f gphotos-sync.css "./mac/gPhotos Sync.app/Contents/Resources/app/gphotos-sync.css"
 cp -f gphotos-sync.html "./mac/gPhotos Sync.app/Contents/Resources/app/gphotos-sync.html"
+cp -f gphotos.html "./mac/gPhotos Sync.app/Contents/Resources/app/gphotos.html"
 #codesign --force --verbose -s "gPhotos Sync" "./mac/gPhotos Sync.app"
 rm -f -R ~/Applications/gPhotos\ Sync.app
 cp -f -R "./mac/gPhotos Sync.app" ~/Applications/gPhotos\ Sync.app

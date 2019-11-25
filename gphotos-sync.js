@@ -5,14 +5,17 @@ const os = require('os');
 const path = require('path');
 const fs = require('fs');
 const { exec, execSync, spawn } = require('child_process');
+const https = require('https');
 
 try {
 
-  let mainWindow;
-  let gPhotos;
+  let mainWindow = null;
+  let gPhotos = null;
   var tool = '';
   var pip = '';
   var prevTitle = '';
+  var downloadData = [];
+  var downloadIndex = -1;
   
   ipcMain.on('showOpenDialog', function(event, data) {
     dialog.showOpenDialog(mainWindow, data.options, function(result) {
@@ -25,6 +28,74 @@ try {
     data.data = fs.readFileSync(data.path).toString('base64');
     event.sender.send('readFileSync', data);
   });
+
+  ipcMain.on('download', function(event, data) {
+    if('html' in data) {
+      var url = new String(data.html).match(/data-url=\"([^\"]+)\"/);
+      if(url == null) url = new String(data.html).match(/data-image-url=\"([^\"]+)\"/);
+      if(url) {
+        https.get(url[1] + '=d', function(r) {
+          var contents = [];
+          r.on('data', function(chunk) {
+            contents.push(chunk);
+          });
+          r.on('end', function() {
+            //dialog.showErrorBox('Info', data.path + ', ' + Buffer.concat(contents).length + ', ' + fs.statSync(data.path)['size']);
+            if(Buffer.concat(contents).length > fs.statSync(data.path)['size']) {
+              fs.writeFileSync(data.path, Buffer.concat(contents));
+            } else {
+              mainWindow.webView.send('status', syncTime() + ' WARNING Local file is bigger(' + Buffer.concat(contents).length + ', ' + fs.statSync(data.path)['size'] + '): ' + data.path);
+            }
+            download();
+          });
+        });
+      }
+    } else {
+      downloadData = data;
+      downloadIndex = -1;
+      download();
+    }
+  });
+  
+  function download() {
+    downloadIndex++;
+    var i = downloadIndex;
+    var data = downloadData;
+    if(data[i] == null || typeof data[i] == 'undefined') {
+      downloadIndex = -1;
+      return;
+    }
+    if('url' in data[i]) {
+      gPhotos.on('closed', function() { 
+        gPhotos = new BrowserWindow({
+            title: 'gPhotos',
+            titleBarStyle: 'default',
+            resizable: true,
+            minimizable: true,
+            maximizable: false,            
+            show: false,
+            width: 1000, height: 700,
+            center: true,
+        }).once('ready-to-show', function() {
+          gPhotos.webView.executeJavaScript('window.deskgap.messageUI.send(\'download\', {html: document.body.innerHTML, path: decodeURIComponent(\'' + encodeURIComponent(data[i].path) + '\')})');
+        });
+        mainWindow.webView.send('status', syncTime() + ' WARNING Web download ' + (i + 1) + '/' + data.length);
+        gPhotos.loadURL(data[i].url);
+      });
+      gPhotos.close();
+    }
+  }
+
+  function syncTime() {
+    var d = new Date();
+    var h = d.getHours();
+    if(h < 10) h = '0' + h;
+    var m = d.getMinutes();
+    if(m < 10) m = '0' + m;
+    var s = d.getSeconds();
+    if(s < 10) s = '0' + s;    
+    return (d.getMonth() + 1) + '-' + d.getDate() + ' ' + [h, m, s].join(':')
+  }
 
   ipcMain.on('saveSettings', function(event, data) {
     fs.writeFileSync(path.join(os.homedir(), 'gPhotos Sync Settings.json'), JSON.stringify(data)); 
@@ -42,6 +113,70 @@ try {
   ipcMain.on('sync', function(event, lib) {
     var exe = tool.split(' ')[0];
     var args = lib.flags;
+    for(var i in args) {
+      if(args[i] == '--web-download') {
+        if(gPhotos == null) {
+          gPhotos = new BrowserWindow({
+              title: 'gPhotos',
+              titleBarStyle: 'default',
+              resizable: true,
+              minimizable: true,
+              maximizable: false,            
+              show: false,
+              width: 1000, height: 700,
+              center: true,
+          }).once('ready-to-show', () => {
+            
+            try {
+              
+              gPhotos.setMenu(null);    
+              gPhotos.show();
+              if(os.platform() == 'darwin') exec('osascript -e \'tell application "gPhotos" to activate\'');
+              gPhotos.webView.executeJavaScript('location = \'https://photos.google.com/albums?hl=en\'');
+                      
+            } catch(e){
+              
+              dialog.showErrorBox('Error', e.stack);
+              
+            }            
+          });  
+    
+          setInterval(function() {
+            if(gPhotos == null) {
+              return;
+            } else {
+              if(gPhotos.isDestroyed()) return;
+            }
+            try {
+              var title = gPhotos.getTitle();
+              if(title.indexOf('Sign in') == 0 && title != prevTitle) dialog.showErrorBox('Info', 'Please sign in');
+              if(title.indexOf('Albums') == 0 && title != prevTitle) {
+                //gPhotos.minimize();
+              }
+              if(title != '') prevTitle = title;
+            } catch(e2) {
+              //
+            }
+          }, 3000);
+          
+          gPhotos.on('closed', function() {
+            prevTitle = '';
+            gPhotos = null;
+          });          
+          
+          gPhotos.loadFile('gphotos.html');  // load website
+          
+        } else {
+          
+          gPhotos.show();
+          gPhotos.loadFile('gphotos.html');  // load website
+          
+        }    
+
+        delete args[i];
+        args = args.filter(function() { return true });
+      }
+    }
     args.push(lib.path);
     //dialog.showErrorBox('Info', exe + ' => ' + args.join(','));
     var sync = spawn(exe, args, {cwd: os.homedir()});
@@ -75,7 +210,7 @@ try {
       });    
     }   
   });
-  
+    
   function about_tools() {
     fs.writeFileSync(path.join(os.homedir(), 'gPhotos Sync.log'), JSON.stringify([tool, pip]));    
     if(pip == '') {
@@ -95,44 +230,6 @@ try {
   
   app.once('ready', () => {
     
-      /*
-      gPhotos = new BrowserWindow({
-          title: 'gPhotos',
-          titleBarStyle: 'default',
-          resizable: true,
-          minimizable: true,
-          maximizable: false,            
-          show: false,
-          width: 1000, height: 700,
-          center: true,
-      }).once('ready-to-show', () => {
-        
-        try {
-          
-          gPhotos.setMenu(null);    
-          gPhotos.show();
-          if(os.platform() == 'darwin') exec('osascript -e \'tell application "gPhotos" to activate\'');
-                  
-        } catch(e){
-          
-          dialog.showErrorBox('Error', e.stack);
-          
-        }            
-      });  
-
-      gPhotos.on('page-title-updated', function() {
-        var title = gPhotos.getTitle();
-        if(title.indexOf('Sign in') == 0 && title != prevTitle) dialog.showErrorBox('Info', 'Please sign in');
-        if(title.indexOf('Albums') == 0 && title != prevTitle) {
-          dialog.showErrorBox('Info', 'Thank you ;-)');
-          gPhotos.minimize();
-        }
-        if(title != '') prevTitle = title;
-      });
-      
-      gPhotos.loadURL('https://photos.google.com/albums?hl=en');  // force english
-      */
-      
       mainWindow = new BrowserWindow({
           title: 'gPhotos Sync',
           titleBarStyle: 'default',
