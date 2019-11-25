@@ -84,7 +84,7 @@ try {
     if(data[i] == null || typeof data[i] == 'undefined') {
       mainWindow.webView.send('status', syncTime() + ' WARNING Web download finished.');
       setTimeout(function() {
-        gPhotos.loadFile('gphotos.html');
+        gPhotos.loadURL('https://photos.google.com/albums?hl=en');
         gPhotos.show();
       }, 2000);
       downloadIndex = -1;
