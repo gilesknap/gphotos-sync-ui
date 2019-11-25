@@ -82,7 +82,11 @@ try {
     var i = downloadIndex;
     var data = downloadData;
     if(data[i] == null || typeof data[i] == 'undefined') {
-      gPhotos.show();
+      mainWindow.webView.send('status', syncTime() + ' WARNING Web download finished.');
+      setTimeout(function() {
+        gPhotos.loadFile('gphotos.html');
+        gPhotos.show();
+      }, 2000);
       downloadIndex = -1;
       return;
     }
