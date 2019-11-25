@@ -47,3 +47,7 @@ Todo
 
 * gphotos-sync https://github.com/gilesknap/gphotos-sync
 * DeskGap https://github.com/patr0nus/DeskGap
+
+## Recommended tools
+
+* https://www.xnview.com/fr/xnviewmp
