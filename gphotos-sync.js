@@ -327,6 +327,6 @@ try {
   
 } catch(e){
     dialog.showErrorBox('Error', e.stack);
-    app.quit();
+    //app.quit();
 }
 
