@@ -16,6 +16,7 @@ try {
   var prevTitle = '';
   var downloadData = [];
   var downloadIndex = -1;
+  var downloadTimeout = null;
   
   ipcMain.on('showOpenDialog', function(event, data) {
     dialog.showOpenDialog(mainWindow, data.options, function(result) {
@@ -36,18 +37,28 @@ try {
       if(url) {
         https.get(url[1] + '=d', function(r) {
           var contents = [];
-          r.on('data', function(chunk) {
-            contents.push(chunk);
-          });
-          r.on('end', function() {
-            //dialog.showErrorBox('Info', data.path + ', ' + Buffer.concat(contents).length + ', ' + fs.statSync(data.path)['size']);
-            if(Buffer.concat(contents).length > fs.statSync(data.path)['size']) {
-              fs.writeFileSync(data.path, Buffer.concat(contents));
-            } else {
-              mainWindow.webView.send('status', syncTime() + ' WARNING Local file is bigger(' + Buffer.concat(contents).length + ', ' + fs.statSync(data.path)['size'] + '): ' + data.path);
-            }
+          if(parseInt(r.headers['content-length']) == fs.statSync(data.path)['size']) {
+            // no update needed
+            r.emit('end');
             download();
-          });
+          } else {
+            r.on('data', function(chunk) {
+              contents.push(chunk);
+            });
+            r.on('end', function() {
+              //dialog.showErrorBox('Info', data.path + ', ' + Buffer.concat(contents).length + ', ' + fs.statSync(data.path)['size']);
+              if(Buffer.concat(contents).length == fs.statSync(data.path)['size']) {
+                // no update required
+              } else {
+                if(Buffer.concat(contents).length > fs.statSync(data.path)['size']) {
+                  fs.writeFileSync(data.path, Buffer.concat(contents));
+                } else {
+                  mainWindow.webView.send('status', syncTime() + ' WARNING Local file is bigger(' + Buffer.concat(contents).length + ', ' + fs.statSync(data.path)['size'] + '): ' + data.path);
+                }
+              }
+              download();
+            });
+          }
         });
       }
     } else {
@@ -58,10 +69,15 @@ try {
   });
   
   function download() {
+    if(downloadTimeout != null) {
+      clearTimeout(downloadTimeout);
+      downloadTimeout = null;
+    }
     downloadIndex++;
     var i = downloadIndex;
     var data = downloadData;
     if(data[i] == null || typeof data[i] == 'undefined') {
+      gPhotos.show();
       downloadIndex = -1;
       return;
     }
@@ -78,6 +94,10 @@ try {
             center: true,
         }).once('ready-to-show', function() {
           gPhotos.webView.executeJavaScript('window.deskgap.messageUI.send(\'download\', {html: document.body.innerHTML, path: decodeURIComponent(\'' + encodeURIComponent(data[i].path) + '\')})');
+          downloadTimeout = setTimeout(function() {
+            mainWindow.webView.send('status', syncTime() + ' WARNING Web download timeout ' + (i + 1));            
+            download();
+          }, 10000);
         });
         mainWindow.webView.send('status', syncTime() + ' WARNING Web download ' + (i + 1) + '/' + data.length);
         gPhotos.loadURL(data[i].url);
@@ -300,7 +320,7 @@ try {
     child.stderr.on('data', function (data) {   process.stdout.write(data.toString()); result += data.toString(); });
     
     child.on('close', function (code) { 
-        console.log("Finished with code " + code);
+        console.log('Finished with code ' + code);
         callback(result);
     });    
   }	
