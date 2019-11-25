@@ -34,35 +34,39 @@ try {
       var url = new String(data.html).match(/data-url=\"([^\"]+)\"/);
       if(url == null) url = new String(data.html).match(/data-image-url=\"([^\"]+)\"/);
       if(url) {
-        https.get(url[1] + '=d', function(r) {
-          var contents = [];
-          /*if(parseInt(r.headers['content-length']) == fs.statSync(data.path)['size']) {
+        https.get(url[1] + '=d', { headers: { range: 'bytes=0-1' } }, function(r) {
+          if(parseInt(r.headers['content-range'].substring(r.headers['content-range'].indexOf('/') + 1)) == fs.statSync(data.path)['size']) {
             r.on('data', function(chunk) {
             });
             r.on('end', function() {
               download();
             });
-            r.emit('end');
-          } else {*/  
-            r.on('data', function(chunk) {
-              contents.push(chunk);
-            });
-            r.on('end', function() {
-              if(Buffer.concat(contents).length == fs.statSync(data.path)['size']) {
-                // no update required
-              } else {
-                if(Buffer.concat(contents).length > fs.statSync(data.path)['size']) {
-                  fs.writeFileSync(data.path, Buffer.concat(contents));
+            r.on('error', function() {
+              download();
+            });            
+          } else {
+            https.get(url[1] + '=d', function(r2) {            
+              var contents = [];            
+              r2.on('data', function(chunk) {
+                contents.push(chunk);
+              });
+              r2.on('end', function() {
+                if(Buffer.concat(contents).length == fs.statSync(data.path)['size']) {
+                  // no update required
                 } else {
-                  mainWindow.webView.send('status', syncTime() + ' WARNING Local file is bigger(' + Buffer.concat(contents).length + ', ' + fs.statSync(data.path)['size'] + '): ' + data.path);
+                  if(Buffer.concat(contents).length > fs.statSync(data.path)['size']) {
+                    fs.writeFileSync(data.path, Buffer.concat(contents));
+                  } else {
+                    mainWindow.webView.send('status', syncTime() + ' WARNING Local file is bigger(' + Buffer.concat(contents).length + ', ' + fs.statSync(data.path)['size'] + '): ' + data.path);
+                  }
                 }
-              }
-              download();
+                download();
+              });
+              r2.on('error', function() {
+                download();
+              });              
             });
-          //}
-          r.on('error', function() {
-            download();
-          });
+          }
         });
       }
     } else {
