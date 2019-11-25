@@ -181,7 +181,19 @@ try {
               var title = gPhotos.getTitle();
               if(title.indexOf('Sign in') == 0 && title != prevTitle) dialog.showErrorBox('Info', 'Please sign in');
               if(title.indexOf('Albums') == 0 && title != prevTitle) {
-                //gPhotos.minimize();
+                
+                gPhotos.minimize();
+
+                args.push(lib.path);
+                //dialog.showErrorBox('Info', exe + ' => ' + args.join(','));
+                var sync = spawn(exe, args, {cwd: os.homedir()});
+                sync.stdout.on('data', function(data) {
+                  event.sender.send('status', data.toString());
+                });
+                sync.stderr.on('data', function(data) {
+                  event.sender.send('status', data.toString());
+                });
+                
               }
               if(title != '') prevTitle = title;
             } catch(e2) {
@@ -205,6 +217,8 @@ try {
 
         delete args[i];
         args = args.filter(function() { return true });
+        
+        return;
       }
     }
     args.push(lib.path);
