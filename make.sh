@@ -17,20 +17,20 @@ then
   cd ..
 fi
 echo Building gPhotos Sync App...
-cp -f package.json "./linux/gPhotos Sync/resourcess/app/package.json"
-cp -f material.min.css "./linux/gPhotos Sync/resourcess/app/material.min.css"
-cp -f material.min.js "./linux/gPhotos Sync/resourcess/app/material.min.js"
-cp -f material.min.css.map "./linux/gPhotos Sync/resourcess/app/material.min.css.map"
-cp -f material.min.js.map "./linux/gPhotos Sync/resourcess/app/material.min.js.map"
-cp -f dialog-polyfill.js "./linux/gPhotos Sync/resourcess/app/dialog-polyfill.js"
-cp -f dialog-polyfill.css "./linux/gPhotos Sync/resourcess/app/dialog-polyfill.css"
-cp -f icons.woff2 "./linux/gPhotos Sync/resourcess/app/icons.woff2"
-cp -f sql.js "./linux/gPhotos Sync/resourcess/app/sql.js"
-cp -f gphotos-sync.js "./linux/gPhotos Sync/resourcess/app/gphotos-sync.js"
-cp -f gphotos-sync-ui.js "./linux/gPhotos Sync/resourcess/app/gphotos-sync-ui.js"
-cp -f gphotos-sync.css "./linux/gPhotos Sync/resourcess/app/gphotos-sync.css"
-cp -f gphotos-sync.html "./linux/gPhotos Sync/resourcess/app/gphotos-sync.html"
-cp -f gphotos.html "./linux/gPhotos Sync/resourcess/app/gphotos.html"
+cp -f package.json "./linux/gPhotos Sync/resources/app/package.json"
+cp -f material.min.css "./linux/gPhotos Sync/resources/app/material.min.css"
+cp -f material.min.js "./linux/gPhotos Sync/resources/app/material.min.js"
+cp -f material.min.css.map "./linux/gPhotos Sync/resources/app/material.min.css.map"
+cp -f material.min.js.map "./linux/gPhotos Sync/resources/app/material.min.js.map"
+cp -f dialog-polyfill.js "./linux/gPhotos Sync/resources/app/dialog-polyfill.js"
+cp -f dialog-polyfill.css "./linux/gPhotos Sync/resources/app/dialog-polyfill.css"
+cp -f icons.woff2 "./linux/gPhotos Sync/resources/app/icons.woff2"
+cp -f sql.js "./linux/gPhotos Sync/resources/app/sql.js"
+cp -f gphotos-sync.js "./linux/gPhotos Sync/resources/app/gphotos-sync.js"
+cp -f gphotos-sync-ui.js "./linux/gPhotos Sync/resources/app/gphotos-sync-ui.js"
+cp -f gphotos-sync.css "./linux/gPhotos Sync/resources/app/gphotos-sync.css"
+cp -f gphotos-sync.html "./linux/gPhotos Sync/resources/app/gphotos-sync.html"
+cp -f gphotos.html "./linux/gPhotos Sync/resources/app/gphotos.html"
 cd linux
 zip -r "../../gPhoto Sync.zip" *
 echo Done.
