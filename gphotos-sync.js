@@ -36,6 +36,7 @@ try {
       if(url) {
         https.get(url[1] + '=d', { headers: { range: 'bytes=0-1' } }, function(r) {
           if(parseInt(r.headers['content-range'].substring(r.headers['content-range'].indexOf('/') + 1)) == fs.statSync(data.path)['size']) {
+            //mainWindow.webView.send('status', syncTime() + ' WARNING Local file already up-to-update (' + r.headers['content-range'].substring(r.headers['content-range'].indexOf('/') + 1) + ', ' + fs.statSync(data.path)['size'] + '): ' + data.path);           
             r.on('data', function(chunk) {
             });
             r.on('end', function() {
@@ -57,7 +58,7 @@ try {
                   if(Buffer.concat(contents).length > fs.statSync(data.path)['size']) {
                     fs.writeFileSync(data.path, Buffer.concat(contents));
                   } else {
-                    mainWindow.webView.send('status', syncTime() + ' WARNING Local file is bigger(' + Buffer.concat(contents).length + ', ' + fs.statSync(data.path)['size'] + '): ' + data.path);
+                    //mainWindow.webView.send('status', syncTime() + ' WARNING Local file is bigger(' + Buffer.concat(contents).length + ', ' + fs.statSync(data.path)['size'] + '): ' + data.path);
                   }
                 }
                 download();
