@@ -86,7 +86,8 @@ try {
       return;
     }
     if('url' in data[i]) {
-      gPhotos.on('closed', function() { 
+      gPhotos.on('closed', function() {
+        if(!gPhotos.isDestroyed()) gPhotos.destroy();
         gPhotos = new BrowserWindow({
             title: 'gPhotos',
             titleBarStyle: 'default',
@@ -109,7 +110,7 @@ try {
         });
         mainWindow.webView.send('status', syncTime() + ' WARNING Web download ' + (i + 1) + '/' + data.length);
         gPhotos.loadURL(data[i].url);
-      });
+      });        
       gPhotos.close();
     }
   }
