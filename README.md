@@ -17,9 +17,12 @@ The app is not yet available for download
 * The app is copied to `~/Applications` folder
 * Dependencies: none
 
-### Linux
+### Linux (untested)
 
-*Not available yet*
+* Download or clone the project
+* Run `make.sh` script (make executable if necessary using `chmod +x make.sh`)
+* The app is compressed as `../gPhotos Sync.zip` and also available in `linux/gPhoto Sync` folder
+* Dependencies: none
 
 ### Windows
 
