@@ -11,7 +11,7 @@ then
   unzip deskgap.zip
   rm deskgap.zip
   mv "./DeskGap" "./gPhotos Sync"
-  rm -f /gPhotos\ Sync/resources/app/*.*
+  rm -f ./gPhotos\ Sync/resources/app/*
   mv "./gPhotos Sync/DeskGap" "./gPhotos Sync/gPhotos Sync"
   chmod +x "./gPhotos Sync/gPhotos Sync"
   cd ..
