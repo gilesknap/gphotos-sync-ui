@@ -94,6 +94,7 @@ try {
             center: true,
         }).once('ready-to-show', function() {
           try {
+            //gPhotos.show();
             gPhotos.webView.executeJavaScript('window.deskgap.messageUI.send(\'download\', {html: document.body.innerHTML, path: decodeURIComponent(\'' + encodeURIComponent(data[i].path) + '\')})');
           } catch(e) {
             dialog.showErrorBox('Error', e.stack);            
