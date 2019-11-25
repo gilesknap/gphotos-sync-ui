@@ -99,7 +99,7 @@
       </li>
       <li class="lib-settings mdl-list__item" id="lib-settings-rescan">
         <span class="mdl-list__item-primary-content">
-          Rescan
+          Rescan (ignore scan date)
         </span>
         <span class="mdl-list__item-secondary-action">
           <label class="mdl-switch mdl-js-switch mdl-js-ripple-effect" for="settings-rescan">
@@ -107,6 +107,56 @@
           </label>
         </span>        
       </li>
+      <li class="lib-settings mdl-list__item" id="lib-settings-flush-index">
+        <span class="mdl-list__item-primary-content">
+          Flush index (rescan everything)
+        </span>
+        <span class="mdl-list__item-secondary-action">
+          <label class="mdl-switch mdl-js-switch mdl-js-ripple-effect" for="settings-flush-index">
+            <input type="checkbox" id="settings-flush-index" class="mdl-switch__input" />
+          </label>
+        </span>        
+      </li>
+      <li class="lib-settings mdl-list__item" id="lib-settings-retry-download">
+        <span class="mdl-list__item-primary-content">
+          Retry download (e.g. you deleted some local files)
+        </span>
+        <span class="mdl-list__item-secondary-action">
+          <label class="mdl-switch mdl-js-switch mdl-js-ripple-effect" for="settings-retry-download">
+            <input type="checkbox" id="settings-retry-download" class="mdl-switch__input" />
+          </label>
+        </span>        
+      </li>
+      <li class="lib-settings mdl-list__item" id="lib-settings-skip-video">
+        <span class="mdl-list__item-primary-content">
+          Skip videos (download photos only)
+        </span>
+        <span class="mdl-list__item-secondary-action">
+          <label class="mdl-switch mdl-js-switch mdl-js-ripple-effect" for="settings-skip-video">
+            <input type="checkbox" id="settings-skip-video" class="mdl-switch__input" />
+          </label>
+        </span>        
+      </li>
+      <li class="lib-settings mdl-list__item" id="lib-settings-skip-shared-albums">
+        <span class="mdl-list__item-primary-content">
+          Skip shared albums
+        </span>
+        <span class="mdl-list__item-secondary-action">
+          <label class="mdl-switch mdl-js-switch mdl-js-ripple-effect" for="settings-skip-shared-albums">
+            <input type="checkbox" id="settings-skip-shared-albums" class="mdl-switch__input" />
+          </label>
+        </span>        
+      </li> 
+      <li class="lib-settings mdl-list__item" id="lib-settings-do-delete">
+        <span class="mdl-list__item-primary-content">
+          Mirror deletions (delete local files when remote files are deleted)
+        </span>
+        <span class="mdl-list__item-secondary-action">
+          <label class="mdl-switch mdl-js-switch mdl-js-ripple-effect" for="settings-do-delete">
+            <input type="checkbox" id="settings-do-delete" class="mdl-switch__input" />
+          </label>
+        </span>        
+      </li>                              
     </ul>  
   </div>
   <div class="mdl-dialog__actions">

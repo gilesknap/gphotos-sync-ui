@@ -42,3 +42,8 @@ Todo
 ![](gphotos-sync-ui-1.png)
 ![](gphotos-sync-ui-2.png)
 ![](gphotos-sync-ui-3.png)
+
+## Related projects
+
+* gphotos-sync https://github.com/gilesknap/gphotos-sync
+* DeskGap https://github.com/patr0nus/DeskGap

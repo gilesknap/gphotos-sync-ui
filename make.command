@@ -6,6 +6,7 @@ if [ ! -d "mac" ]
 then
   mkdir mac
   cd mac
+  echo Downloading DeskGap...
   curl -L https://github.com/patr0nus/DeskGap/releases/download/v0.1.0/deskgap-v0.1.0-darwin-x64.zip --output desktop.zip
   unzip desktop.zip
   rm desktop.zip
@@ -14,6 +15,7 @@ then
   mv "./gPhotos Sync.app/Contents/MacOS/DeskGap" "./gPhotos Sync.app/Contents/MacOS/gphotos-sync"
   cd ..
 fi
+echo Building gPhotos Sync App...
 cp PkgInfo "./mac/gPhotos Sync.app/Contents/PkgInfo"
 cp Info.plist "./mac/gPhotos Sync.app/Contents/Info.plist"
 cp gphotos-sync.icns "./mac/gPhotos Sync.app/Contents/Resources"
@@ -35,4 +37,5 @@ rm -f -R ~/Applications/gPhotos\ Sync.app
 cp -f -R "./mac/gPhotos Sync.app" ~/Applications/gPhotos\ Sync.app
 cd mac
 #zip -r "../../rel/gPhotos Sync.app.zip" "gPhotos Sync.app"
+echo Done.
 
