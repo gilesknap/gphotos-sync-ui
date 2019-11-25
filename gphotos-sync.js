@@ -143,8 +143,10 @@ try {
   ipcMain.on('sync', function(event, lib) {
     var exe = tool.split(' ')[0];
     var args = lib.flags;
+    var arg = '';
     for(var i in args) {
-      if(args[i] == '--web-download') {
+      arg = args[i];
+      if(arg == '--web-download') {
         if(gPhotos == null) {
           gPhotos = new BrowserWindow({
               title: 'gPhotos',
@@ -183,17 +185,20 @@ try {
               if(title.indexOf('Albums') == 0 && title != prevTitle) {
                 
                 gPhotos.minimize();
-
-                args.push(lib.path);
-                //dialog.showErrorBox('Info', exe + ' => ' + args.join(','));
-                var sync = spawn(exe, args, {cwd: os.homedir()});
-                sync.stdout.on('data', function(data) {
-                  event.sender.send('status', data.toString());
-                });
-                sync.stderr.on('data', function(data) {
-                  event.sender.send('status', data.toString());
-                });
-                
+                if(arg == '--web-download') {
+                  arg = '';
+                  delete args[i];
+                  args = args.filter(function() { return true });                  
+                  args.push(lib.path);
+                  //dialog.showErrorBox('Info', exe + ' => ' + args.join(','));
+                  var sync = spawn(exe, args, {cwd: os.homedir()});
+                  sync.stdout.on('data', function(data) {
+                    event.sender.send('status', data.toString());
+                  });
+                  sync.stderr.on('data', function(data) {
+                    event.sender.send('status', data.toString());
+                  });
+                }
               }
               if(title != '') prevTitle = title;
             } catch(e2) {
@@ -213,11 +218,7 @@ try {
           gPhotos.show();
           gPhotos.loadFile('gphotos.html');  // load website
           
-        }    
-
-        delete args[i];
-        args = args.filter(function() { return true });
-        
+        }            
         return;
       }
     }
