@@ -29,7 +29,7 @@ The app is not yet available for download
 * Download or clone the project
 * Run `make.cmd` script
 * The app is packed as `../gPhotos Sync.exe` (_fake news_) and also available in `win/gPhotos Sync` folder
-* Dependencies: wget - download from (here)[https://eternallybored.org/misc/wget/1.20.3/32/wget.exe] and copy to the same folder containing make.cmd
+* Dependencies: wget - [download from here](https://eternallybored.org/misc/wget/1.20.3/32/wget.exe) and copy to the same folder containing make.cmd
 
 ## Project status
 
