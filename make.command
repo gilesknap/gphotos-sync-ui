@@ -7,9 +7,9 @@ then
   mkdir mac
   cd mac
   echo Downloading DeskGap...
-  curl -L https://github.com/patr0nus/DeskGap/releases/download/v0.1.0/deskgap-v0.1.0-darwin-x64.zip --output desktop.zip
-  unzip desktop.zip
-  rm desktop.zip
+  curl -L https://github.com/patr0nus/DeskGap/releases/download/v0.1.0/deskgap-v0.1.0-darwin-x64.zip --output deskgap.zip
+  unzip deskgap.zip
+  rm deskgap.zip
   mv DeskGap.app gPhotos\ Sync.app
   rm -f gPhotos\ Sync.app/Contents/Resources/app/*
   mv "./gPhotos Sync.app/Contents/MacOS/DeskGap" "./gPhotos Sync.app/Contents/MacOS/gphotos-sync"
