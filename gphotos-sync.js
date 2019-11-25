@@ -37,7 +37,7 @@ try {
       if(url) {
         https.get(url[1] + '=d', function(r) {
           var contents = [];
-           if(parseInt(r.headers['content-length']) == fs.statSync(data.path)['size']) {
+          if(parseInt(r.headers['content-length']) == fs.statSync(data.path)['size']) {
             r.on('data', function(chunk) {
             });
             r.on('end', function() {
