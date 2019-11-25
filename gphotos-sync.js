@@ -37,34 +37,33 @@ try {
       if(url) {
         https.get(url[1] + '=d', function(r) {
           var contents = [];
-          try {
-            if(parseInt(r.headers['content-length']) == fs.statSync(data.path)['size']) {
-              // no update needed
-              try { r.emit('end'); } catch(e2) {}
+           if(parseInt(r.headers['content-length']) == fs.statSync(data.path)['size']) {
+            r.on('data', function(chunk) {
+            });
+            r.on('end', function() {
               download();
-            } else {
-              r.on('data', function(chunk) {
-                try { 
-                  contents.push(chunk);
-                } catch(e2) {}
-              });
-              r.on('end', function() {
-                try { 
-                  //dialog.showErrorBox('Info', data.path + ', ' + Buffer.concat(contents).length + ', ' + fs.statSync(data.path)['size']);
-                  if(Buffer.concat(contents).length == fs.statSync(data.path)['size']) {
-                    // no update required
-                  } else {
-                    if(Buffer.concat(contents).length > fs.statSync(data.path)['size']) {
-                      fs.writeFileSync(data.path, Buffer.concat(contents));
-                    } else {
-                      mainWindow.webView.send('status', syncTime() + ' WARNING Local file is bigger(' + Buffer.concat(contents).length + ', ' + fs.statSync(data.path)['size'] + '): ' + data.path);
-                    }
-                  }
-                } catch(e2) {}
-                download();
-              });
-            }
-          } catch(e3) {}
+            });
+            r.emit('end');
+          } else {  
+            r.on('data', function(chunk) {
+              contents.push(chunk);
+            });
+            r.on('end', function() {
+              if(Buffer.concat(contents).length == fs.statSync(data.path)['size']) {
+                // no update required
+              } else {
+                if(Buffer.concat(contents).length > fs.statSync(data.path)['size']) {
+                  fs.writeFileSync(data.path, Buffer.concat(contents));
+                } else {
+                  mainWindow.webView.send('status', syncTime() + ' WARNING Local file is bigger(' + Buffer.concat(contents).length + ', ' + fs.statSync(data.path)['size'] + '): ' + data.path);
+                }
+              }
+              download();
+            });
+          }
+          r.on('error', function() {
+            download();
+          });
         });
       }
     } else {
@@ -76,7 +75,7 @@ try {
   
   function download() {
     if(downloadTimeout != null) {
-      try { clearTimeout(downloadTimeout); } catch(e) {}
+      clearTimeout(downloadTimeout);
       downloadTimeout = null;
     }
     downloadIndex++;
@@ -98,13 +97,15 @@ try {
             width: 1000, height: 700,
             center: true,
         }).once('ready-to-show', function() {
-          gPhotos.webView.executeJavaScript('window.deskgap.messageUI.send(\'download\', {html: document.body.innerHTML, path: decodeURIComponent(\'' + encodeURIComponent(data[i].path) + '\')})');
-          downloadTimeout = setTimeout(function() {
-            try { 
+          try {
+            gPhotos.webView.executeJavaScript('window.deskgap.messageUI.send(\'download\', {html: document.body.innerHTML, path: decodeURIComponent(\'' + encodeURIComponent(data[i].path) + '\')})');
+            downloadTimeout = setTimeout(function() {
               mainWindow.webView.send('status', syncTime() + ' WARNING Web download timeout ' + (i + 1));            
-            } catch(e) {}
-            download();
-          }, 10000);
+              download();
+            }, 10000);
+          } catch(e) {
+            dialog.showErrorBox('Error', e.stack);            
+          }
         });
         mainWindow.webView.send('status', syncTime() + ' WARNING Web download ' + (i + 1) + '/' + data.length);
         gPhotos.loadURL(data[i].url);
