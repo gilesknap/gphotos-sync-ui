@@ -2,6 +2,8 @@
 node_modules
 mac
 linux
+win
+wget.exe
 gphotossync.*
 cert.command
 fix_user.command

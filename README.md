@@ -21,12 +21,15 @@ The app is not yet available for download
 
 * Download or clone the project
 * Run `make.sh` script (make executable if necessary using `chmod +x make.sh`)
-* The app is compressed as `../gPhotos Sync.zip` and also available in `linux/gPhoto Sync` folder
+* The app is compressed as `../gPhotos Sync.zip` and also available in `linux/gPhotos Sync` folder
 * Dependencies: none
 
-### Windows
+### Windows (untested)
 
-*Not available yet*
+* Download or clone the project
+* Run `make.cmd` script
+* The app is packed as `../gPhotos Sync.exe` (_fake news_) and also available in `win/gPhotos Sync` folder
+* Dependencies: wget - download from (here)[https://eternallybored.org/misc/wget/1.20.3/32/wget.exe] and copy to the same folder containing make.cmd
 
 ## Project status
 
