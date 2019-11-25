@@ -16,7 +16,6 @@ try {
   var prevTitle = '';
   var downloadData = [];
   var downloadIndex = -1;
-  var downloadTimeout = null;
   
   ipcMain.on('showOpenDialog', function(event, data) {
     dialog.showOpenDialog(mainWindow, data.options, function(result) {
@@ -74,14 +73,11 @@ try {
   });
   
   function download() {
-    if(downloadTimeout != null) {
-      clearTimeout(downloadTimeout);
-      downloadTimeout = null;
-    }
     downloadIndex++;
     var i = downloadIndex;
     var data = downloadData;
     if(data[i] == null || typeof data[i] == 'undefined') {
+      gPhotos.show();
       downloadIndex = -1;
       return;
     }
@@ -99,10 +95,6 @@ try {
         }).once('ready-to-show', function() {
           try {
             gPhotos.webView.executeJavaScript('window.deskgap.messageUI.send(\'download\', {html: document.body.innerHTML, path: decodeURIComponent(\'' + encodeURIComponent(data[i].path) + '\')})');
-            downloadTimeout = setTimeout(function() {
-              mainWindow.webView.send('status', syncTime() + ' WARNING Web download timeout ' + (i + 1));            
-              download();
-            }, 10000);
           } catch(e) {
             dialog.showErrorBox('Error', e.stack);            
           }
