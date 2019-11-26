@@ -9,7 +9,7 @@ if not exist "win" (
   del deskgap.zip
   rename DeskGap "gPhotos Sync"
   del /q "gPhotos Sync\resources\app\*.*"
-  rename "gPhotos Sync\DeskGap.exe" "gPhotos Sync\gPhotos Sync.exe"
+  rename "gPhotos Sync\DeskGap.exe" "gPhotos Sync.exe"
   cd ..
 )
 echo Building gPhotos Sync App...
