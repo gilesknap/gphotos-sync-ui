@@ -24,7 +24,7 @@ The app is not yet available for download
 * The app is compressed as `../gPhotos Sync.zip` and also available in `linux/gPhotos Sync` folder
 * Dependencies: none
 
-### Windows (untested)
+### Windows
 
 * Download or clone the project
 * Run `make.cmd` script
