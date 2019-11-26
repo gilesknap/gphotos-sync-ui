@@ -27,7 +27,7 @@ cp -f material.min.js.map "./mac/gPhotos Sync.app/Contents/Resources/app/materia
 cp -f dialog-polyfill.js "./mac/gPhotos Sync.app/Contents/Resources/app/dialog-polyfill.js"
 cp -f dialog-polyfill.css "./mac/gPhotos Sync.app/Contents/Resources/app/dialog-polyfill.css"
 cp -f icons.woff "./mac/gPhotos Sync.app/Contents/Resources/app/icons.woff"
-cp -f icons.woff2 "./mac/gPhotos Sync.app/Contents/Resources/app/icons.woff2"
+#cp -f icons.woff2 "./mac/gPhotos Sync.app/Contents/Resources/app/icons.woff2"
 cp -f sql.js "./mac/gPhotos Sync.app/Contents/Resources/app/sql.js"
 cp -f gphotos-sync.js "./mac/gPhotos Sync.app/Contents/Resources/app/gphotos-sync.js"
 cp -f gphotos-sync-ui.js "./mac/gPhotos Sync.app/Contents/Resources/app/gphotos-sync-ui.js"
