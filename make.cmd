@@ -21,7 +21,6 @@ copy /y material.min.js.map ".\win\gPhotos Sync\resources\app\material.min.js.ma
 copy /y dialog-polyfill.js ".\win\gPhotos Sync\resources\app\dialog-polyfill.js"
 copy /y dialog-polyfill.css ".\win\gPhotos Sync\resources\app\dialog-polyfill.css"
 copy /y icons.woff ".\win\gPhotos Sync\resources\app\icons.woff"
-rem copy /y icons.woff2 ".\win\gPhotos Sync\resources\app\icons.woff2"
 copy /y sql.js ".\win\gPhotos Sync\resources\app\sql.js"
 copy /y gphotos-sync.js ".\win\gPhotos Sync\resources\app\gphotos-sync.js"
 copy /y gphotos-sync-ui.js ".\win\gPhotos Sync\resources\app\gphotos-sync-ui.js"
