@@ -1,10 +1,11 @@
 @echo off
+del Thumbs.db*
 if not exist "win" (
   mkdir win
   cd win
   echo Downloading DeskGap...
   ..\wget -O deskgap.zip https://github.com/patr0nus/DeskGap/releases/download/v0.1.0/deskgap-v0.1.0-win32-ia32.zip
-  ..\unzip e deskgap.zip
+  ..\unzip deskgap.zip
   del deskgap.zip
   rename DeskGap "gPhotos Sync"
   del "gPhotos Sync\resources\app\*.*"
