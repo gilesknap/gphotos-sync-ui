@@ -10,7 +10,7 @@ The app is not yet available for download
 
 ## Requirements
 
-* python
+* python - [download from here](https://www.python.org/ftp/python/3.6.8/python-3.6.8.exe)
 * gphotos-sync
 
 ## Testing
