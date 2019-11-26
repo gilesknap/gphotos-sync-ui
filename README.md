@@ -8,6 +8,11 @@ Graphical User Interface for the great gphotos-sync tool using node and DeskGap
 
 The app is not yet available for download
 
+## Requirements
+
+* python
+* gphotos-sync
+
 ## Testing
 
 ### macOS
