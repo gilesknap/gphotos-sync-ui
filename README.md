@@ -31,7 +31,7 @@ The app is not yet available for download
 * The app is packed as `../gPhotos Sync.exe` (_fake news_) and also available in `win/gPhotos Sync` folder
 * Dependencies:
   * wget - [download from here](https://eternallybored.org/misc/wget/1.20.3/32/wget.exe) and copy to the same folder containing make.cmd
-  * 7zip command line - [download from here](https://www.7-zip.org/a/7za920.zip) and copy 7za.exe to the same folder containing make.cmd 
+  * unzip - [download from here](https://sourceforge.net/projects/unigw/files/unzip/5.50/unzip.exe/download) and copy unzip.exe to the same folder containing make.cmd 
 
 ## Project status
 

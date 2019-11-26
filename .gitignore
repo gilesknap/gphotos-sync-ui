@@ -4,7 +4,7 @@ mac
 linux
 win
 wget.exe
-7za.exe
+unzip.exe
 gphotossync.*
 cert.command
 fix_user.command
