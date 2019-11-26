@@ -4,7 +4,7 @@ if not exist "win" (
   cd win
   echo Downloading DeskGap...
   ..\wget -O deskgap.zip https://github.com/patr0nus/DeskGap/releases/download/v0.1.0/deskgap-v0.1.0-win32-ia32.zip
-  7za e deskgap.zip
+  ..\7za e deskgap.zip
   del deskgap.zip
   rename DeskGap "gPhotos Sync"
   del "gPhotos Sync\resources\app\*.*"

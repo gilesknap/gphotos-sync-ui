@@ -8,3 +8,6 @@ wget.exe
 gphotossync.*
 cert.command
 fix_user.command
+Thumbs.db
+Thumbs.db*
+.wget*
