@@ -24,6 +24,7 @@ cp -f material.min.css.map "./linux/gPhotos Sync/resources/app/material.min.css.
 cp -f material.min.js.map "./linux/gPhotos Sync/resources/app/material.min.js.map"
 cp -f dialog-polyfill.js "./linux/gPhotos Sync/resources/app/dialog-polyfill.js"
 cp -f dialog-polyfill.css "./linux/gPhotos Sync/resources/app/dialog-polyfill.css"
+cp -f icons.woff "./linux/gPhotos Sync/resources/app/icons.woff"
 cp -f icons.woff2 "./linux/gPhotos Sync/resources/app/icons.woff2"
 cp -f sql.js "./linux/gPhotos Sync/resources/app/sql.js"
 cp -f gphotos-sync.js "./linux/gPhotos Sync/resources/app/gphotos-sync.js"
