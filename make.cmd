@@ -1,5 +1,5 @@
 @echo off
-del Thumbs.db*
+del /q Thumbs.db*
 if not exist "win" (
   mkdir win
   cd win
@@ -8,7 +8,7 @@ if not exist "win" (
   ..\unzip deskgap.zip
   del deskgap.zip
   rename DeskGap "gPhotos Sync"
-  del "gPhotos Sync\resources\app\*.*"
+  del /q "gPhotos Sync\resources\app\*.*"
   rename "gPhotos Sync\DeskGap.exe" "gPhotos Sync\gPhotos Sync.exe"
   cd ..
 )
