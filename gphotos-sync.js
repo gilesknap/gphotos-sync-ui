@@ -234,7 +234,7 @@ try {
   });
   
   // find tool
-  locate(['gphotos-sync', 'gphotos-sync.*'], function(result) {
+  locate(['gphotos-sync', 'gphotos-sync.exe'], function(result) {
     tool = result;
     if(tool == '') {
       // find pipenv
@@ -242,7 +242,7 @@ try {
         pip = result;
         // find python
         if(pip == '') {
-          locate(['python3', 'python*.exe'], function(result) {
+          locate(['python3', 'python.exe'], function(result) {
             pip = result;
             if(pip != '') {
               pip += ' -m pip'; 
@@ -310,7 +310,7 @@ try {
   
   function locate(path, callback) {
     var where = 'which ' + path[0];
-    if(os.platform().indexOf('win') == 0) where = 'where /r "%ProgramFiles%" ' + path[1]; // ???
+    if(os.platform().indexOf('win') == 0) where = 'where ' + path[1]; // ???
     var found = [''];
     try {
       run(where, function(result) {
